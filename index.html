@@ -56,46 +56,37 @@
         var voice;
         
         btnSpeak.addEventListener('click', ()=> {
-            
             var toSpeak = new SpeechSynthesisUtterance(txtInput.value);
-            //toSpeak.voice = synth.getVoices()[5];
-            //toSpeak.lang = 'en';
+            toSpeak.voice = voice;
             toSpeak.pitch = pitchSpeak.value/50;//from 0 to 2
             toSpeak.volume = volSpeak.value/100;//from 0 to 1
             toSpeak.rate = 0.1 + rateSpeak.value/(10 + 1/9.9);// from 0.1 to 10
-            //console.log(toSpeak);
             synth.cancel();
             synth.speak(toSpeak);
-            console.log(synth.pending);
         });
-		synth.getVoices().forEach((voice) => {
-			var listItem = document.createElement('option');
-			listItem.textContent = voice.name;
-			listItem.setAttribute('data-lang', voice.lang);
-			listItem.setAttribute('data-name', voice.name);
-			voiceList.appendChild(listItem);
-		});
+		
+		
 		console.log(synth.getVoices());
 		PopulateVoices();
 		if (speechSynthesis !== undefined) {
 				speechSynthesis.onvoiceschanged = PopulateVoices;
 			}
-
-       function PopulateVoices() {
-			voices = synth.getVoices();
-			console.log(voices);
-			var selectedIndex = voiceList.selectedIndex < 0 ? 0 : voiceList.selectedIndex;
-			voiceList.innerHTML = '';
-			console.log(voices);
-			voices.forEach((voice) => {
-				var listItem = document.createElement('option');
-				listItem.textContent = voice.name;
-				listItem.setAttribute('data-lang', voice.lang);
-				listItem.setAttribute('data-name', voice.name);
-				voiceList.appendChild(listItem);
+		voiceList.onchange = ()=>{
+			synth.getVoices().forEach((tvoice) => {
+				if(voiceList.value == tvoice.name){
+					voice = tvoice;
+				}
 			});
-
-			voiceList.selectedIndex = selectedIndex;
+		};
+       function PopulateVoices() {
+		   
+			synth.getVoices().forEach((voice) => {
+			   var listItem = document.createElement('option');
+			   listItem.textContent = voice.name;
+			   listItem.setAttribute('data-lang', voice.lang);
+			   listItem.setAttribute('data-name', voice.name);
+			   voiceList.appendChild(listItem);
+		   });
 		}
     </script>
 </body>
