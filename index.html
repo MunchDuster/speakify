@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,17 +11,19 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" />
 	<link rel="stylesheet" href="style.css" type="text/css" />
 </head>
+
 <body>
 	Filter: <textarea rows="1" id="voiceFilter"></textarea>
 	<button onclick="applyFilter()">Apply Filter</button><br>
-    Select Voice: <select id='voiceList'></select> <br><br>
+	Select Voice: <select id='voiceList'></select> <br><br>
 
-    <textarea id='txtInput' value="hi" ></textarea> <br><br>
-    
-    <input type="range" value="50"id="pitch" >Pitch<br>
-    <input type="range" value="100"id="vol">Volume<br>
-    <input type="range" value="9.090909"id="rate">Rate<br>
-    <button id='btnSpeak'>Speak!</button>
-    <script src="script.js"></script>
+	<textarea id='txtInput' value="hi"></textarea> <br><br>
+
+	<input type="range" value="50" id="pitch">Pitch<br>
+	<input type="range" value="100" id="vol">Volume<br>
+	<input type="range" value="9.090909" id="rate">Rate<br>
+	<button id='btnSpeak'>Speak!</button>
+	<script src="script.js"></script>
 </body>
+
 </html>
