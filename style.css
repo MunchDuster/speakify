@@ -1,0 +1,23 @@
+button{
+    outline: none;
+    background-color: rgb(184, 184, 184);
+    border: 1px solid grey;
+    width:200px;
+    height:30px;
+    font-family: 'JetBrains Mono';
+}
+input{
+    outline: none;
+    font-family: 'JetBrains Mono';
+    font-weight: 500;
+}
+input[type="range"] {
+    border-radius: 10px;
+}
+body{
+    font-family: 'JetBrains Mono';
+}
+select{
+    font-family: 'JetBrains Mono';
+    font-size: large;
+}
