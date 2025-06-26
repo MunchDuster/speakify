@@ -1,4 +1,5 @@
 const txtInput = document.querySelector('#txtInput');
+const voiceFilter = document.querySelector('#voiceFilter');
 const voiceList = document.querySelector('#voiceList');
 const btnSpeak = document.querySelector('#btnSpeak');
 const pitchSpeak = document.querySelector('#pitch');
@@ -6,6 +7,8 @@ const volSpeak = document.querySelector('#vol');
 const rateSpeak = document.querySelector('#rate');
 const synth = window.speechSynthesis;
 var voice;
+
+const voices = synth.getVoices();
 
 btnSpeak.addEventListener('click', ()=> {
     var toSpeak = new SpeechSynthesisUtterance(txtInput.value);
@@ -17,12 +20,11 @@ btnSpeak.addEventListener('click', ()=> {
     synth.speak(toSpeak);
 });
 
-
-console.log(synth.getVoices());
 PopulateVoices();
 if (speechSynthesis !== undefined) {
-        speechSynthesis.onvoiceschanged = PopulateVoices;
-    }
+    speechSynthesis.onvoiceschanged = PopulateVoices;
+}
+
 voiceList.onchange = ()=>{
     synth.getVoices().forEach((tvoice) => {
         if(voiceList.value == tvoice.name){
@@ -31,12 +33,24 @@ voiceList.onchange = ()=>{
     });
 };
 function PopulateVoices() {
-    
-    synth.getVoices().forEach((voice) => {
+    for (let voice of voices) {
+        if (!voice.name.includes(voiceFilter.value)) {
+            continue;
+        }
         var listItem = document.createElement('option');
         listItem.textContent = voice.name;
         listItem.setAttribute('data-lang', voice.lang);
         listItem.setAttribute('data-name', voice.name);
         voiceList.appendChild(listItem);
-    });
+    }
+}
+function applyFilter() {
+    ClearVoices();
+    PopulateVoices();
+}
+function ClearVoices() {
+    const children = voiceList.children.length;
+    for (let i = 0; i < children; i++) {
+        voiceList.removeChild(voiceList.children[0]);
+    }
 }
