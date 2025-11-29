@@ -8,6 +8,9 @@ const rateSpeak = document.querySelector('#rate');
 const synth = window.speechSynthesis;
 const voices = synth.getVoices();
 
+// sort by name alphabetically
+voices.sort((a,b) => a.name.localeCompare(b.name))
+
 var voice;
 
 btnSpeak.addEventListener('click', () => {
