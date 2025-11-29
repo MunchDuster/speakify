@@ -25,7 +25,7 @@ btnSpeak.addEventListener('click', () => {
 
 PopulateVoices();
 if (speechSynthesis !== undefined) {
-	speechSynthesis.onvoiceschanged = PopulateVoices;
+	speechSynthesis.onvoiceschanged = applyFilter;
 }
 
 voiceList.onchange = () => {
