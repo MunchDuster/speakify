@@ -35,7 +35,10 @@ voiceList.onchange = () => {
 };
 function PopulateVoices() {
 	const filter = voiceFilter.value.trim();
-	const keys = voicesMap.keys().filter(name => filter == '' || name.includes(filter)).toArray();
+	let keys = voicesMap.keys().toArray();
+	if (filter != '') {
+		keys = keys.filter(name => name.includes(filter));
+	}
 	const keyCount = keys.length;
 
 	for (let i = 0; i < keyCount; i++) {
