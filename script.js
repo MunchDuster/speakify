@@ -7,15 +7,14 @@ const volSpeak = document.querySelector('#vol');
 const rateSpeak = document.querySelector('#rate');
 const synth = window.speechSynthesis;
 
+let optionPool = [];
 let voices;
 let voicesMap;
 let voice;
 
+setupVoices();
 if (speechSynthesis !== undefined) {
 	speechSynthesis.onvoiceschanged = setupVoices;
-}
-else {
-	setupVoices();
 }
 
 btnSpeak.addEventListener('click', () => {
@@ -36,14 +35,33 @@ voiceList.onchange = () => {
 };
 function PopulateVoices() {
 	const filter = voiceFilter.value.trim();
-	const keys = voicesMap.keys().filter(name => filter == '' || name.includes(filter));
+	const keys = voicesMap.keys().filter(name => filter == '' || name.includes(filter)).toArray();
+	const keyCount = keys.length;
 
-	for (let name of keys) {
-		const listItem = document.createElement('option');
+	for (let i = 0; i < keyCount; i++) {
+		const name = keys[i];
+		let listItem;
+		
+		if (i >= optionPool.length) {
+			listItem = document.createElement('option');
+			optionPool.push(listItem);
+			console.log('creating item')
+		}
+		else {
+			console.log('reusing item')
+			listItem = optionPool[i];
+			listItem.style.display = 'block';
+		}
+
 		listItem.textContent = name;
 		listItem.setAttribute('data-lang', voicesMap.get(name).lang);
 		listItem.setAttribute('data-name', voicesMap.get(name).name);
 		voiceList.appendChild(listItem);
+	}
+	// hide unused pool options
+	for (let i = keyCount; i < optionPool.length; i++) {
+		optionPool[i].style.display = 'none';
+		console.log('hiding')
 	}
 }
 function setupVoices() {
@@ -58,6 +76,7 @@ function setupVoices() {
 	for (let voice of voices) {
 		voicesMap.set(voice.name.trim(), voice);
 	}
+	console.log(voices.length)
 
 	PopulateVoices();
 }
