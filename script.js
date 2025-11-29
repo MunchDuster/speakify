@@ -36,14 +36,17 @@ voiceList.onchange = () => {
 	});
 };
 function PopulateVoices() {
+	const filter = voiceFilter.value.trim();
+	
 	for (let voice of voices) {
-		if (!voice.name.includes(voiceFilter.value)) {
+		const name = voice.name.trim();
+		if (filter != '' && !name.includes(filter)) {
 			continue;
 		}
-		var listItem = document.createElement('option');
+		const listItem = document.createElement('option');
 		listItem.textContent = voice.name;
 		listItem.setAttribute('data-lang', voice.lang);
-		listItem.setAttribute('data-name', voice.name);
+		listItem.setAttribute('data-name', name);
 		voiceList.appendChild(listItem);
 	}
 }
