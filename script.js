@@ -11,6 +11,13 @@ const voices = synth.getVoices();
 // sort by name alphabetically
 voices.sort((a,b) => a.name.localeCompare(b.name))
 
+// to make filtering more performant, use a map which has the name which is the filter key
+// (some OS&browser pairs result in 13000+ voices)
+const voicesMap = new Map();
+for (let voice of voices) {
+	voicesMap.set(voice.name.trim(), voice);
+}
+
 var voice;
 
 btnSpeak.addEventListener('click', () => {
@@ -29,24 +36,20 @@ if (speechSynthesis !== undefined) {
 }
 
 voiceList.onchange = () => {
-	synth.getVoices().forEach((tvoice) => {
-		if (voiceList.value == tvoice.name) {
-			voice = tvoice;
-		}
-	});
+	const key = voiceList.value;
+	if (voicesMap.has(key)) {
+		voice = voicesMap.get(key);
+	}
 };
 function PopulateVoices() {
 	const filter = voiceFilter.value.trim();
-	
-	for (let voice of voices) {
-		const name = voice.name.trim();
-		if (filter != '' && !name.includes(filter)) {
-			continue;
-		}
+	const keys = voicesMap.keys().filter(name => filter == '' || name.includes(filter));
+
+	for (let name of keys) {
 		const listItem = document.createElement('option');
-		listItem.textContent = voice.name;
-		listItem.setAttribute('data-lang', voice.lang);
-		listItem.setAttribute('data-name', name);
+		listItem.textContent = name;
+		listItem.setAttribute('data-lang', voicesMap.get(name).lang);
+		listItem.setAttribute('data-name', voicesMap.get(name).name);
 		voiceList.appendChild(listItem);
 	}
 }
